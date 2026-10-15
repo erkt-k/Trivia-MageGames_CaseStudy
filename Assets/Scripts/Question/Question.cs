@@ -49,11 +49,13 @@ namespace TriviaGame.Questions
 
         public void CheckAnswer(string choiceIndex)
         {
+            // Make the checks in lower to make sure.
             if (choiceIndex.ToLower() == CorrectAnswer.ToLower())
             {
                 m_uiBuilder.ShowCorrectAnswer(choiceIndex);
                 m_uiBuilder.OnAnimationComplete.AddListener(() =>
                 {
+                    // Announce after the animation is done so it is not cut off.
                     OnQuestionAnswered.Invoke(QuestionResult.Success);
                 });
             }
@@ -62,6 +64,7 @@ namespace TriviaGame.Questions
                 m_uiBuilder.ShowWrongAnswer(answer, choiceIndex);
                 m_uiBuilder.OnAnimationComplete.AddListener(() =>
                 {
+                    // Announce after the animation is done so it is not cut off.
                     OnQuestionAnswered.Invoke(QuestionResult.Fail);
                 });
             }

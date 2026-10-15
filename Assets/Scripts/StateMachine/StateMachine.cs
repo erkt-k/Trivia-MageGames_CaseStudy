@@ -30,9 +30,11 @@ namespace TriviaGame.FSM
 
         private void ChangeState(IState newState)
         {
+            // Exit the possible previous state
             if (m_currentState != null) m_currentState.Exit();
             m_currentState = newState;
             Debug.Log($"New State: {m_currentState}");
+            // Enter the new state
             m_currentState.Enter();
         }
 
@@ -41,13 +43,14 @@ namespace TriviaGame.FSM
             if (m_currentState is GameState) return;
             if (m_gameState == null)
             {
+                // If you don't have the necessary state try to find it. 
                 m_gameState = FindAnyObjectByType<GameState>();
                 if (m_gameState != null)
                 {
                     ChangeState(m_gameState);
                     m_gameState.OnGameEnd.AddListener(ChangeToMainMenuState);
                 } else
-                {
+                { // if you can't, show error.
                     Debug.LogError("State Machine CAN'T FIND Game State");
                     return;
                 }
@@ -62,10 +65,10 @@ namespace TriviaGame.FSM
         {
             if (m_currentState is LeaderboardState) return;
             if (m_leaderboardState == null)
-            {
+            {// If you don't have the necessary state try to find it.
                 m_leaderboardState = FindAnyObjectByType<LeaderboardState>();
                 if (m_leaderboardState != null) ChangeState(m_leaderboardState);
-                else Debug.LogError("State Machine CAN'T FIND Leaderboard State");
+                else Debug.LogError("State Machine CAN'T FIND Leaderboard State");// if you can't, show error.
             } else
             ChangeState(m_leaderboardState);
         }
@@ -74,7 +77,7 @@ namespace TriviaGame.FSM
         {
             if (m_currentState is MainMenuState) return;
             if (m_mainMenuState == null)
-            {
+            {// If you don't have the necessary state try to find it.
                 m_mainMenuState = FindAnyObjectByType<MainMenuState>();
                 if (m_mainMenuState != null)
                 {
@@ -82,7 +85,7 @@ namespace TriviaGame.FSM
                     m_gameState.OnGameEnd.RemoveListener(ChangeToMainMenuState);
                 } else
                 {
-                    Debug.LogError("State Machine CAN'T FIND Main Menu State");
+                    Debug.LogError("State Machine CAN'T FIND Main Menu State");// if you can't, show error.
                     return;
                 }
             } else
@@ -96,10 +99,10 @@ namespace TriviaGame.FSM
         {
             if (m_currentState is SettingsState) return;
             if (m_settingsState == null)
-            {
+            {// If you don't have the necessary state try to find it.
                 m_settingsState = FindAnyObjectByType<SettingsState>();
                 if (m_settingsState != null) ChangeState(m_settingsState);
-                else Debug.LogError("State Machine CAN'T FIND Settings State");
+                else Debug.LogError("State Machine CAN'T FIND Settings State");// if you can't, show error.
             } else
             ChangeState(m_settingsState);
         }

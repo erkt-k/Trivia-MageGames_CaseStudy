@@ -1,18 +1,21 @@
 using System.Collections;
-using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
 
 namespace TriviaGame.Leaderboard
 {
+    /// <summary>
+    /// Handles the web request for leaderboard data.
+    /// </summary>
     public class LeaderboardGetter : MonoBehaviour
     {
+        // The list we get from the webRequest.
         private LeaderboardList m_lbList;
         [SerializeField] private const string baseUrl = "https://localhost:8080/leaderboard?page=";
         [SerializeField] private const string fallbackUrl = "https://magegamessite.web.app/case1/leaderboard_page_";
-        [SerializeField, Min(1)] private int m_timeOut;
-        private Coroutine m_webrequestRoutine;
+        [SerializeField, Min(1)] private int m_timeOut; // How many seconds to wait for before time out.
+        private Coroutine m_webrequestRoutine; // async web request routine.
 
         public UnityEvent OnRequestStart = new UnityEvent();
         public UnityEvent<bool, LeaderboardList> OnRequestEnd = new UnityEvent<bool, LeaderboardList>();
@@ -31,7 +34,7 @@ namespace TriviaGame.Leaderboard
         IEnumerator WebRequestCoroutine(string uri, int page)
         {
             OnRequestStart.Invoke();
-            Debug.Log(uri + page);
+            Debug.Log(uri + page); // Log the uri used for Debug purposes.
             using (UnityWebRequest webRequest = UnityWebRequest.Get(uri + page))
             {
                 webRequest.timeout = m_timeOut;
@@ -41,6 +44,7 @@ namespace TriviaGame.Leaderboard
 
                 switch(webRequest.result)
                 {
+                    // If fail, try again with the fallback url
                     case UnityWebRequest.Result.ConnectionError:
                         Debug.LogError($"Base URL has thrown an Error: {webRequest.error}");
                         m_webrequestRoutine = StartCoroutine(FallbackWebRequestCoroutine(page));
@@ -54,6 +58,7 @@ namespace TriviaGame.Leaderboard
                         m_webrequestRoutine = StartCoroutine(FallbackWebRequestCoroutine(page));
                     break;
                     case UnityWebRequest.Result.Success:
+                    // if success, announce and reset the routine.
                         m_lbList = FileIOHelper.GetData<LeaderboardList>(webRequest.downloadHandler.text);
                         m_webrequestRoutine = null;
                         OnRequestEnd.Invoke(true, m_lbList);

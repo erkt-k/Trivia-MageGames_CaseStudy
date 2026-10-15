@@ -4,6 +4,7 @@ using System.Collections.Generic;
 /// <summary>
 /// A Bag is a simple data structure that gives a random item from inside the bag and remove (hide) the item upon giving it.
 /// Elements can be reused without adding them again.
+/// I ended up not using it because it would just add an unnecessary layer to getting questions. Would be more useful in a real life scenario.
 /// </summary>
 public class Bag<T>
 {

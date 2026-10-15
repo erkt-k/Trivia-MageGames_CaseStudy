@@ -19,6 +19,7 @@ namespace TriviaGame.ScoreSystem
 
         void Awake()
         {
+            // there is only one score system manager so it is a Singleton.
             if (s_instance != null && s_instance != this)
             {
                 Destroy(gameObject);

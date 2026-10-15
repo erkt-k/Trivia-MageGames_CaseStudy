@@ -24,10 +24,12 @@ namespace TriviaGame.ScoreSystem
 
         public void Initialize(int score)
         {
+            // Get the score text in the scene and write the score.
             m_scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<TextMeshProUGUI>();
             string scoreText = score.ToString();
             m_scoreText.text = scoreText;
 
+            // In the game scene, the liste child of the score container is the pop up.
             Transform scoreParent = m_scoreText.transform.parent;
             m_scoreChangePopupText = scoreParent.GetChild(scoreParent.childCount-1).GetComponent<TextMeshProUGUI>(); // This is a bit hard coded so there must be a better way.
         }
@@ -64,6 +66,10 @@ namespace TriviaGame.ScoreSystem
                             });
         }
 
+        /// <summary>
+        /// Does a small bump and writes the new score.
+        /// </summary>
+        /// <param name="score">new score.</param>
         public void AnimateScoreText(int score)
         {
             RectTransform scoreTextTransform = m_scoreText.rectTransform;

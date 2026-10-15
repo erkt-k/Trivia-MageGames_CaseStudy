@@ -57,6 +57,7 @@ namespace TriviaGame.Sounds
 
         private void PlaySound(AudioSource source)
         {
+            // Pitch delta allows us to add a bit of variety to the sound every time it is played.
             float m_pitchDelta = Random.Range(-0.5f, 0.5f);
             float pitch = m_pitch + m_pitchDelta;
 

@@ -25,6 +25,7 @@ namespace TriviaGame.FSM
 
         public void Enter()
         {
+            // If we are changing scenes wait till loading is done.
             if (SceneManager.GetActiveScene().buildIndex != 1)
             {
                 m_waitingForGameScene = true;
@@ -39,6 +40,7 @@ namespace TriviaGame.FSM
 
         private void OnGameSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            // if done waiting and in wrong scene do nothing.
             if (!m_waitingForGameScene || scene.buildIndex != 1) return;
 
             m_waitingForGameScene = false;
@@ -48,6 +50,7 @@ namespace TriviaGame.FSM
 
         private void InitializeGameScene()
         {
+            // Get all the fields from the screen.
             m_scoreManager = FindAnyObjectByType<ScoreManager>();
             m_scoreManager.Initialize();
             GameObject timerObject = GameObject.FindGameObjectWithTag("Timer");
@@ -79,11 +82,13 @@ namespace TriviaGame.FSM
             }
 
             m_timer.OnTimerRunOutEvent.AddListener(OnQuestionResult);
+            // Get the first question.
             GetNewQuestion();
         }
 
         public void Exit()
         {
+            // Reset the state
             m_waitingForGameScene = false;
             SceneManager.sceneLoaded -= OnGameSceneLoaded;
             if (m_timer != null) m_timer.OnTimerRunOutEvent.RemoveAllListeners();
@@ -102,18 +107,27 @@ namespace TriviaGame.FSM
         {
             if (m_currentQuestion != null)
             {
+                // If this is not the first question unsubscribe from the previous one.
                 m_currentQuestion.OnQuestionAnswered.RemoveAllListeners();
                 m_currentQuestion = null;
             }
 
+            // Try to get the next question
             m_currentQuestion = m_questionGetter.GetNewQuestion();
+            // If there are still questions, subscribe.
             if (m_currentQuestion != null) m_currentQuestion.OnQuestionAnswered.AddListener(OnQuestionResult);
+            // If not end the game.
             else OnGameEnd.Invoke();
 
+            // Reset the timer for each question.
             m_timer.ResetTimer();
             m_timer.StartTimer();
         }
 
+        /// <summary>
+        /// Updates the score depending on the question score. Then gets the next question.
+        /// </summary>
+        /// <param name="questionResult"></param>
         public void OnQuestionResult(QuestionResult questionResult)
         {
             switch (questionResult)

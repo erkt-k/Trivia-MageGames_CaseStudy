@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace TriviaGame.Leaderboard
 {
+    // The Gameobject counter part of leaderboard entries.
     public class LeaderboardEntry : MonoBehaviour
     {
         [Header("Entry Fields")]
