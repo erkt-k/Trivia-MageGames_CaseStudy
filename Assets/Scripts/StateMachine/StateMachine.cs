@@ -40,6 +40,7 @@ namespace TriviaGame.FSM
 
         public void ChangeToGameState()
         {
+            Debug.Log($"Entering State: {m_currentState}");
             if (m_currentState is GameState) return;
             if (m_gameState == null)
             {
@@ -63,6 +64,7 @@ namespace TriviaGame.FSM
 
         public void ChangeToLeaderboardState()
         {
+            Debug.Log($"Entering State: {m_currentState}");
             if (m_currentState is LeaderboardState) return;
             if (m_leaderboardState == null)
             {// If you don't have the necessary state try to find it.
@@ -75,6 +77,7 @@ namespace TriviaGame.FSM
 
         public void ChangeToMainMenuState()
         {
+            Debug.Log($"Entering State: {m_currentState}");
             if (m_currentState is MainMenuState) return;
             if (m_mainMenuState == null)
             {// If you don't have the necessary state try to find it.
@@ -97,6 +100,7 @@ namespace TriviaGame.FSM
 
         public void ChangeToSettingsState()
         {
+            Debug.Log($"Entering State: {m_currentState}");
             if (m_currentState is SettingsState) return;
             if (m_settingsState == null)
             {// If you don't have the necessary state try to find it.

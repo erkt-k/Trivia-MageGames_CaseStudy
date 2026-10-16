@@ -40,7 +40,7 @@ namespace TriviaGame.FSM
         {
             // Get the fields and initialize them.
             m_scoreManager = FindAnyObjectByType<ScoreManager>();
-            m_scoreManager.Initialize();
+            if (m_scoreManager != null) m_scoreManager.Initialize();
 
             m_mainMenuCanvas = GameObject.FindGameObjectWithTag("HomeBody").GetComponent<Canvas>();
             m_mainMenuCanvas.enabled = true;

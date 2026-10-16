@@ -12,11 +12,12 @@ public class Navigation : MonoBehaviour
 
     void Awake()
     {
-        if (m_FSM == null) m_FSM = FindAnyObjectByType<StateMachine>();
+        
     }
 
     public void Navigate()
     {
+        if (m_FSM == null) m_FSM = FindAnyObjectByType<StateMachine>();
         switch (m_destination)
         {
             case NavigationDestination.GameState:

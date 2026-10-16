@@ -24,15 +24,22 @@ namespace TriviaGame.ScoreSystem
 
         public void Initialize(int score)
         {
+            GameObject foundText = GameObject.FindGameObjectWithTag("Score");
             // Get the score text in the scene and write the score.
-            m_scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<TextMeshProUGUI>();
-            string scoreText = score.ToString();
-            m_scoreText.text = scoreText;
+            if (foundText.TryGetComponent(out m_scoreText))
+            {
+                string scoreText = score.ToString();
+                m_scoreText.text = scoreText;
 
-            // In the game scene, the liste child of the score container is the pop up.
-            Transform scoreParent = m_scoreText.transform.parent;
-            m_scoreChangePopupText = scoreParent.GetChild(scoreParent.childCount-1).GetComponent<TextMeshProUGUI>(); // This is a bit hard coded so there must be a better way.
+                // In the game scene, the liste child of the score container is the pop up.
+                Transform scoreParent = m_scoreText.transform.parent;
+                if (scoreParent.childCount == 3) m_scoreChangePopupText = scoreParent.GetChild(scoreParent.childCount-1).GetComponent<TextMeshProUGUI>(); // This is a bit hard coded so there must be a better way.
+            } else
+            Debug.LogError("Could not find Score text!");
         }
+
+
+            
 
         // Jumps to score text
         public void ShowScoreChange(int change, int newScore)

@@ -36,7 +36,7 @@ namespace TriviaGame.ScoreSystem
         {
             m_score = GetScore();
 
-            if (m_scoreUIManager == null) m_scoreUIManager.GetComponent<ScoreUIManager>();
+            if (m_scoreUIManager == null) m_scoreUIManager = FindAnyObjectByType<ScoreUIManager>();
             m_scoreUIManager.Initialize(m_score);
         }
 
